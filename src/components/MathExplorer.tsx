@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import * as PIXI from "pixi.js";
-import styles from "../styles/MathExplorer.module.css";
 
 interface Position {
   x: number;
@@ -304,7 +303,7 @@ const MathExplorer: React.FC = () => {
     if (!app) return;
     const width = app.view.width;
     const height = app.view.height;
-    const factor = 0.5;
+    const factor = 0.9;
     const centerX = width / 2;
     const centerY = height / 2;
 
@@ -330,7 +329,7 @@ const MathExplorer: React.FC = () => {
     if (!app) return;
     const width = app.view.width;
     const height = app.view.height;
-    const factor = 2.0;
+    const factor = 1.1;
     const centerX = width / 2;
     const centerY = height / 2;
 
@@ -377,24 +376,68 @@ const MathExplorer: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.canvasContainer} ref={canvasContainerRef}></div>
-      <div className={styles.info}>
-        <h3>Set: z_(n+1) = z_n² + c</h3>
-        <p>Pan: Click and drag</p>
-        <p>Zoom: Mouse wheel or buttons</p>
-        <div>Iterations: {viewParams.maxIterations}</div>
+    // <div className={styles.container}>
+    //   <div className={styles.canvasContainer} ref={canvasContainerRef}></div>
+    //   <div className={styles.info}>
+    //     <h3>Set: z_(n+1) = z_n² + c</h3>
+    //     <p>Pan: Click and drag</p>
+    //     <p>Zoom: Mouse wheel or buttons</p>
+    //     <div>Iterations: {viewParams.maxIterations}</div>
+    //     <div>
+    //       Position: ({viewParams.xMin.toFixed(2)},{viewParams.yMin.toFixed(2)})
+    //       to ({viewParams.xMax.toFixed(2)},{viewParams.yMax.toFixed(2)})
+    //     </div>
+    //   </div>
+    //   <div className={styles.controls}>
+    //     <button onClick={handleZoomIn}>Zoom In</button>
+    //     <button onClick={handleZoomOut}>Zoom Out</button>
+    //     <button onClick={handleReset}>Reset View</button>
+    //     <button onClick={handleIncreaseIterations}>More Iterations</button>
+    //     <button onClick={handleDecreaseIterations}>Less Iterations</button>
+    //   </div>
+    // </div>
+    <div className="relative w-screen h-screen overflow-hidden">
+      <div className="relative w-full h-full" ref={canvasContainerRef}></div>
+
+      <div className="absolute top-4 left-4 p-4 rounded-md text-white font-sans max-w-[300px]">
+        <p className="font-extrabold">To Pan: Click and Drag</p>
         <div>
-          Position: ({viewParams.xMin.toFixed(2)},{viewParams.yMin.toFixed(2)})
-          to ({viewParams.xMax.toFixed(2)},{viewParams.yMax.toFixed(2)})
+          Current Position: ({viewParams.xMin.toFixed(2)},
+          {viewParams.yMin.toFixed(2)}) to ({viewParams.xMax.toFixed(2)},
+          {viewParams.yMax.toFixed(2)})
         </div>
       </div>
-      <div className={styles.controls}>
-        <button onClick={handleZoomIn}>Zoom In</button>
-        <button onClick={handleZoomOut}>Zoom Out</button>
-        <button onClick={handleReset}>Reset View</button>
-        <button onClick={handleIncreaseIterations}>More Iterations</button>
-        <button onClick={handleDecreaseIterations}>Less Iterations</button>
+      <div className="absolute bottom-4 left-4 p-4 rounded-md">
+        <button
+          onClick={handleZoomIn}
+          className="m-2 px-5 py-2 bg-blue-700 text-white border-none rounded cursor-pointer hover:bg-blue-600"
+        >
+          Zoom In
+        </button>
+        <button
+          onClick={handleZoomOut}
+          className="m-2 px-5 py-2 bg-blue-700 text-white border-none rounded cursor-pointer hover:bg-blue-600"
+        >
+          Zoom Out
+        </button>
+        <button
+          onClick={handleReset}
+          className="m-2 px-5 py-2 bg-blue-700 text-white border-none rounded cursor-pointer hover:bg-blue-600"
+        >
+          Reset View
+        </button>
+        <button
+          onClick={handleIncreaseIterations}
+          className="m-2 px-5 py-2 bg-blue-700 text-white border-none rounded cursor-pointer hover:bg-blue-600"
+        >
+          More Iterations
+        </button>
+        <button
+          onClick={handleDecreaseIterations}
+          className="m-2 px-5 py-2 bg-blue-700 text-white border-none rounded cursor-pointer hover:bg-blue-600"
+        >
+          Less Iterations
+        </button>
       </div>
     </div>
   );
