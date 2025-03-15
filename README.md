@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Interactive Mathematical Explorer
 
-## Getting Started
+An interactive visualization of the equation
 
-First, run the development server:
+```
+z_{n+1} = z_n^2 + c
+```
+
+using React, PixiJS, and Next.js.
+
+Where:
+
+- z starts at 0 (z₀ = 0)
+- c is a complex number representing each point on the grid
+- Each point c has the form (x + yi) where x is the horizontal position and y is the vertical position
+
+## Features
+
+- Interactive visualization of the Mandelbrot set
+- Pan and Zoom controls
+- Configurable maximum iterations
+
+## Installation
+
+1. Clone this repository:
+
+```bash
+git https://github.com/sandeepdreddy/data-viz-ncl.git
+cd data-viz-ncl
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the visualization.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Dependencies
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Next.js - React framework
+- React - UI library
+- PixiJS - WebGL-based rendering library for high-performance graphics
 
-## Learn More
+## How It Works
 
-To learn more about Next.js, take a look at the following resources:
+The visualization:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Maps each pixel to a point in the complex plane from (-2,-2) to (2,2)
+2. For each point, computes the iterative equation z\_{n+1} = z_n^2 + c starting with z₀ = 0
+3. Determines if the sequence remains bounded or escapes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Performance Considerations
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Batch processing with progress updates
+- Hardware acceleration via PixiJS and WebGL
