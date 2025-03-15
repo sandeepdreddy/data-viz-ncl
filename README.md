@@ -16,7 +16,7 @@ Where:
 
 ## Features
 
-- Interactive visualization of the Mandelbrot set
+- Interactive visualization of the equation
 - Pan and Zoom controls
 - Configurable maximum iterations
 
