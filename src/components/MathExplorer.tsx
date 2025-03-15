@@ -14,11 +14,6 @@ const MathExplorer: React.FC = () => {
   const [mesh, setMesh] = useState<PIXI.Mesh | null>(null);
 
   const [viewParams, setViewParams] = useState({
-    // xMin: -2,
-    // xMax: 2,
-    // yMin: -2,
-    // yMax: 2,
-    // maxIterations: 100,
     xMin: -2.7,
     xMax: -0.9,
     yMin: -2.7,
@@ -165,29 +160,6 @@ const MathExplorer: React.FC = () => {
   useEffect(() => {
     if (!app || !app.view) return;
 
-    const zoom = (factor: number, centerX: number, centerY: number) => {
-      const width = app.view.width;
-      const height = app.view.height;
-
-      const centerReal =
-        viewParams.xMin +
-        ((viewParams.xMax - viewParams.xMin) * centerX) / width;
-      const centerImag =
-        viewParams.yMin +
-        ((viewParams.yMax - viewParams.yMin) * centerY) / height;
-
-      const newWidth = (viewParams.xMax - viewParams.xMin) * factor;
-      const newHeight = (viewParams.yMax - viewParams.yMin) * factor;
-
-      setViewParams({
-        ...viewParams,
-        xMin: centerReal - newWidth / 2,
-        xMax: centerReal + newWidth / 2,
-        yMin: centerImag - newHeight / 2,
-        yMax: centerImag + newHeight / 2,
-      });
-    };
-
     const pan = (dx: number, dy: number) => {
       const scaleX = (viewParams.xMax - viewParams.xMin) / app.view.width;
       const scaleY = (viewParams.yMax - viewParams.yMin) / app.view.height;
@@ -200,13 +172,6 @@ const MathExplorer: React.FC = () => {
         yMax: viewParams.yMax - dy * scaleY,
       });
     };
-
-    // Mouse wheel event for zooming
-    // const handleWheel = (e: WheelEvent) => {
-    //   e.preventDefault();
-    //   const zoomFactor = e.deltaY > 0 ? 1.1 : 0.9;
-    //   zoom(zoomFactor, e.clientX, e.clientY);
-    // };
 
     const handleMouseDown = (e: MouseEvent) => {
       isDraggingRef.current = true;
@@ -230,42 +195,11 @@ const MathExplorer: React.FC = () => {
       isDraggingRef.current = false;
     };
 
-    const handleTouchStart = (e: TouchEvent) => {
-      if (e.touches.length === 1) {
-        isDraggingRef.current = true;
-        lastPosRef.current = {
-          x: e.touches[0].clientX,
-          y: e.touches[0].clientY,
-        };
-      }
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (isDraggingRef.current && e.touches.length === 1) {
-        const dx = e.touches[0].clientX - lastPosRef.current.x;
-        const dy = e.touches[0].clientY - lastPosRef.current.y;
-        pan(-dx, -dy);
-        lastPosRef.current = {
-          x: e.touches[0].clientX,
-          y: e.touches[0].clientY,
-        };
-      }
-    };
-
-    const handleTouchEnd = () => {
-      isDraggingRef.current = false;
-    };
-
     // Add event listeners
-
     app.view.addEventListener("mousedown", handleMouseDown);
     app.view.addEventListener("mousemove", handleMouseMove);
     app.view.addEventListener("mouseup", handleMouseUp);
     app.view.addEventListener("mouseleave", handleMouseLeave);
-    app.view.addEventListener("touchstart", handleTouchStart);
-    app.view.addEventListener("touchmove", handleTouchMove);
-    app.view.addEventListener("touchend", handleTouchEnd);
-    // app.view.addEventListener("wheel", handleWheel);
 
     const handleResize = () => {
       if (!canvasContainerRef.current || !app) return;
@@ -286,15 +220,10 @@ const MathExplorer: React.FC = () => {
     // Cleanup
     return () => {
       if (!app.view) return;
-
-      // app.view.removeEventListener("wheel", handleWheel);
       app.view.removeEventListener("mousedown", handleMouseDown);
       app.view.removeEventListener("mousemove", handleMouseMove);
       app.view.removeEventListener("mouseup", handleMouseUp);
       app.view.removeEventListener("mouseleave", handleMouseLeave);
-      app.view.removeEventListener("touchstart", handleTouchStart);
-      app.view.removeEventListener("touchmove", handleTouchMove);
-      app.view.removeEventListener("touchend", handleTouchEnd);
       window.removeEventListener("resize", handleResize);
     };
   }, [app, mesh, viewParams]);
@@ -353,10 +282,10 @@ const MathExplorer: React.FC = () => {
 
   const handleReset = () => {
     setViewParams({
-      xMin: -2,
-      xMax: 2,
-      yMin: -2,
-      yMax: 2,
+      xMin: -2.7,
+      xMax: -0.9,
+      yMin: -2.7,
+      yMax: -0.9,
       maxIterations: 100,
     });
   };
@@ -376,38 +305,10 @@ const MathExplorer: React.FC = () => {
   };
 
   return (
-    // <div className={styles.container}>
-    //   <div className={styles.canvasContainer} ref={canvasContainerRef}></div>
-    //   <div className={styles.info}>
-    //     <h3>Set: z_(n+1) = z_n² + c</h3>
-    //     <p>Pan: Click and drag</p>
-    //     <p>Zoom: Mouse wheel or buttons</p>
-    //     <div>Iterations: {viewParams.maxIterations}</div>
-    //     <div>
-    //       Position: ({viewParams.xMin.toFixed(2)},{viewParams.yMin.toFixed(2)})
-    //       to ({viewParams.xMax.toFixed(2)},{viewParams.yMax.toFixed(2)})
-    //     </div>
-    //   </div>
-    //   <div className={styles.controls}>
-    //     <button onClick={handleZoomIn}>Zoom In</button>
-    //     <button onClick={handleZoomOut}>Zoom Out</button>
-    //     <button onClick={handleReset}>Reset View</button>
-    //     <button onClick={handleIncreaseIterations}>More Iterations</button>
-    //     <button onClick={handleDecreaseIterations}>Less Iterations</button>
-    //   </div>
-    // </div>
     <div className="relative w-screen h-screen overflow-hidden">
       <div className="relative w-full h-full" ref={canvasContainerRef}></div>
-
-      <div className="absolute top-4 left-4 p-4 rounded-md text-white font-sans max-w-[300px]">
-        <p className="font-extrabold">To Pan: Click and Drag</p>
-        <div>
-          Current Position: ({viewParams.xMin.toFixed(2)},
-          {viewParams.yMin.toFixed(2)}) to ({viewParams.xMax.toFixed(2)},
-          {viewParams.yMax.toFixed(2)})
-        </div>
-      </div>
       <div className="absolute bottom-4 left-4 p-4 rounded-md">
+        <p className="m-2 font-bold">To Pan: Click and Drag</p>
         <button
           onClick={handleZoomIn}
           className="m-2 px-5 py-2 bg-blue-700 text-white border-none rounded cursor-pointer hover:bg-blue-600"
