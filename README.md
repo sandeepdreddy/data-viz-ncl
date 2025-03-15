@@ -20,6 +20,10 @@ Where:
 - Pan and Zoom controls
 - Configurable maximum iterations
 
+## Quick Demo
+
+https://app.arcade.software/share/BnryzvwTYe6cPf04RRar
+
 ## Installation
 
 1. Clone this repository:
