@@ -164,6 +164,8 @@ const MathExplorer: React.FC = () => {
       const scaleX = (viewParams.xMax - viewParams.xMin) / app.view.width;
       const scaleY = (viewParams.yMax - viewParams.yMin) / app.view.height;
 
+      console.log(scaleX, scaleY);
+
       setViewParams({
         ...viewParams,
         xMin: viewParams.xMin - dx * scaleX,
@@ -182,7 +184,8 @@ const MathExplorer: React.FC = () => {
       if (isDraggingRef.current) {
         const dx = e.clientX - lastPosRef.current.x;
         const dy = e.clientY - lastPosRef.current.y;
-        pan(-dx, -dy);
+        console.log(dx, dy);
+        pan(dx * 2, -dy * 2);
         lastPosRef.current = { x: e.clientX, y: e.clientY };
       }
     };
